@@ -4,6 +4,27 @@ const { authRequired } = require('../middleware/authRequired');
 
 const router = express.Router();
 
+// GET /api/ofertas → listado general de ofertas del voluntario
+router.get('/', authRequired, async (req, res) => {
+  try {
+    if (req.user.rol !== 'voluntario')
+      return res.status(403).json({ error: 'Solo Voluntario' });
+
+    const sql = `
+      SELECT o.*, s.descripcion, s.estado AS estado_solicitud
+      FROM ofertas o
+      JOIN solicitudes s ON s.id = o.id_solicitud
+      WHERE o.id_voluntario = ?
+      ORDER BY o.id DESC
+    `;
+    const [rows] = await db.query(sql, [req.user.id]);
+    res.json(rows);
+  } catch (error) {
+    console.log("Error GET /api/ofertas:", error);
+    return res.status(500).json({ error: 'Error obteniendo ofertas' });
+  }
+});
+
 router.post('/:solicitudId', authRequired, async (req, res) => {
   if (req.user.rol !== 'voluntario') return res.status(403).json({ error: 'Solo Voluntario' });
   const { mensaje } = req.body;
