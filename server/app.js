@@ -40,19 +40,7 @@ const PORT = process.env.PORT || 3000;
 const SSL_KEY = process.env.SSL_KEY;
 const SSL_CERT = process.env.SSL_CERT;
 
-let server;
-try {
-  if (SSL_KEY && SSL_CERT && fs.existsSync(SSL_KEY) && fs.existsSync(SSL_CERT)) {
-    const options = { key: fs.readFileSync(SSL_KEY), cert: fs.readFileSync(SSL_CERT) };
-    server = https.createServer(options, app);
-    console.log('HTTPS habilitado');
-  } else {
-    server = http.createServer(app);
-    console.log('Usando HTTP');
-  }
-} catch (e) {
-  server = http.createServer(app);
-}
+const server = http.createServer(app);
 
 // Socket.io
 const { Server } = require('socket.io');
