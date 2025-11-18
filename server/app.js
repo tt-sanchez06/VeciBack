@@ -10,15 +10,12 @@ const morgan = require('morgan');
 const db = require('./db');
 
 const app = express();
-const allowedOrigins = (process.env.CORS_ORIGINS || '').split(',').map((o) => o.trim()).filter(Boolean);
-const corsConfig = {
-  origin: allowedOrigins.length ? allowedOrigins : '*',
-  credentials: true
-};
-
 // Middlewares
 app.use(helmet());
-app.use(cors(corsConfig));
+app.use(cors({
+  origin: '*',
+  credentials: true
+}));
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
 app.set('trust proxy', 1);
@@ -61,7 +58,12 @@ try {
 
 // Socket.io
 const { Server } = require('socket.io');
-const io = new Server(server, { cors: corsConfig });
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+    credentials: true
+  }
+});
 app.set('io', io);
 
 const jwt = require('jsonwebtoken');
