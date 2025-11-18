@@ -1,0 +1,13 @@
+# Backend env
+.env
+*.env
+
+# Dependencias del backend
+node_modules/
+
+# Archivos subidos por usuarios
+uploads/
+
+# Logs
+logs/
+*.log
