@@ -3,10 +3,10 @@ require('dotenv').config();
 
 const pool = mysql.createPool({
   host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER || 'root',
+  user: process.env.MYSQLUSER,
   password: process.env.MYSQLPASSWORD,
   database: process.env.MYSQLDATABASE,
-  port: process.env.MYSQLPORT || 3306,
+  port: process.env.MYSQLPORT || 33415,
   ssl: {
     rejectUnauthorized: false
   }
